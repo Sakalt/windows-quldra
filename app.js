@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const startMenu = document.getElementById('start-menu');
     const lockScreen = document.getElementById('lock-screen');
     const bluescreen = document.getElementById('bluescreen');
-    const explorerImage = document.getElementById('explorer-image');
     let isLocked = false;
 
     // スタートメニューを開く
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(app).style.display = 'block';
     };
 
-    // 各ウィンドウを閉じる
+    // アプリを閉じる
     window.closeControlPanel = function() { document.getElementById('control-panel').style.display = 'none'; };
     window.closeBrowser = function() { document.getElementById('browser').style.display = 'none'; };
     window.closeTimer = function() { document.getElementById('timer').style.display = 'none'; };
@@ -34,92 +33,106 @@ document.addEventListener('DOMContentLoaded', function() {
     window.closeAntivirus = function() { document.getElementById('antivirus').style.display = 'none'; };
     window.closeBadsoft = function() { document.getElementById('badsoft').style.display = 'none'; };
 
-    // ロック画面
+    // すべてのウィンドウを閉じる
+    function closeAllWindows() {
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => win.style.display = 'none');
+    }
+
+    // ロック画面を表示
     window.lockScreen = function() {
-        isLocked = true;
         lockScreen.style.display = 'flex';
-        document.getElementById('desktop').style.pointerEvents = 'none';
+        document.getElementById('desktop').style.display = 'none';
+        isLocked = true;
     };
 
+    // ロック画面を解除
     window.unlockScreen = function() {
-        isLocked = false;
         lockScreen.style.display = 'none';
-        document.getElementById('desktop').style.pointerEvents = 'auto';
+        document.getElementById('desktop').style.display = 'block';
+        isLocked = false;
     };
 
     // シャットダウン
     window.shutdown = function() {
-        bluescreen.style.display = 'block';
-        setTimeout(() => location.reload(), 3000); // 3秒後にリロード
+        document.getElementById('bluescreen').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('bluescreen').style.display = 'none';
+            alert('シャットダウンします。');
+        }, 3000);
     };
 
-    // インストールの進行
+    // タイマー
+    let timerInterval;
+    window.startTimer = function() {
+        const minutes = parseInt(document.getElementById('timer-minutes').value, 10);
+        if (isNaN(minutes) || minutes <= 0) return;
+        let seconds = minutes * 60;
+        timerInterval = setInterval(() => {
+            const min = Math.floor(seconds / 60);
+            const sec = seconds % 60;
+            document.getElementById('timer-display').textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                clearInterval(timerInterval);
+                alert('タイマー終了!');
+            }
+        }, 1000);
+    };
+
+    // クロック
+    window.updateClock = function() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock-display').textContent = `${hours}:${minutes}:${seconds}`;
+    };
+    setInterval(updateClock, 1000);
+
+    // ペイント
+    const canvas = document.getElementById('paint-canvas');
+    const ctx = canvas.getContext('2d');
+    let painting = false;
+
+    canvas.addEventListener('mousedown', () => { painting = true; });
+    canvas.addEventListener('mouseup', () => { painting = false; });
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(event) {
+        if (!painting) return;
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#aaaaaa'; // ペイントの色を設定
+        ctx.beginPath();
+        ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        ctx.stroke();
+    }
+
+    window.clearCanvas = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+    // エクスプローラー画像のアップロード
+    window.openExplorer = function() {
+        closeAllWindows();
+        document.getElementById('explorer').style.display = 'block';
+        // 画像を読み込みます
+        document.getElementById('explorer-image').src = 'path_to_image.jpg'; // 適切なパスを設定
+    };
+
+    // インストール機能
     window.nextInstallationStep = function(step) {
         document.getElementById(`installation-step-${step}`).style.display = 'none';
-        document.getElementById(`installation-step-${step + 1}`).style.display = 'block';
+        if (step < 4) {
+            document.getElementById(`installation-step-${step + 1}`).style.display = 'block';
+        }
     };
 
     window.finishInstallation = function() {
         document.getElementById('installation').style.display = 'none';
         document.getElementById('desktop').style.display = 'block';
     };
-
-    // タイマー機能
-    let timerInterval;
-    window.startTimer = function() {
-        const minutes = document.getElementById('timer-minutes').value;
-        const totalTime = minutes * 60 * 1000;
-        const endTime = Date.now() + totalTime;
-
-        if (timerInterval) clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            const remainingTime = endTime - Date.now();
-            if (remainingTime <= 0) {
-                document.getElementById('timer-display').textContent = '00:00';
-                clearInterval(timerInterval);
-            } else {
-                const minutesLeft = Math.floor(remainingTime / (60 * 1000));
-                const secondsLeft = Math.floor((remainingTime % (60 * 1000)) / 1000);
-                document.getElementById('timer-display').textContent =
-                    `${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
-            }
-        }, 1000);
-    };
-
-    // 時計機能
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('clock-display').textContent =
-            now.toTimeString().split(' ')[0];
-    }, 1000);
-
-    // ペイント機能
-    const canvas = document.getElementById('paint-canvas');
-    const ctx = canvas.getContext('2d');
-    let painting = false;
-
-    canvas.addEventListener('mousedown', () => painting = true);
-    canvas.addEventListener('mouseup', () => painting = false);
-    canvas.addEventListener('mousemove', (e) => {
-        if (painting) {
-            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-            ctx.stroke();
-        }
-    });
-
-    window.clearCanvas = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    };
-
-    // エクスプローラーにペイント画像を表示
-    window.openExplorer = function() {
-        const imageUrl = canvas.toDataURL();
-        explorerImage.src = imageUrl;
-        openApp('explorer');
-    };
-
-    function closeAllWindows() {
-        const windows = ['control-panel', 'browser', 'timer', 'clock', 'paint', 'explorer', 'minesweeper', 'antivirus', 'badsoft'];
-        windows.forEach(win => document.getElementById(win).style.display = 'none');
-    }
 });
