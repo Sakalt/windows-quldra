@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Quldra</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #212121;
+            color: white;
+        }
+
+        #desktop {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('wallpaper.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #taskbar {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #start-menu-button {
+            cursor: pointer;
+            background-image: url('quldra.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 40px;
+            height: 40px;
+        }
+
+        #language-switch {
+            cursor: pointer;
+            background-color: blue;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: white;
+        }
+
+        #start-menu {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #ccc;
+            width: 300px;
+            display: none;
+            z-index: 10;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #start-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #start-menu ul li {
+            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        #start-menu ul li:last-child {
+            border-bottom: none;
+        }
+
+        #start-menu ul li:hover {
+            background: #f0f0f0;
+        }
+
+        .window {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            background: white;
+            border: 1px solid #ccc;
+            z-index: 5;
+            padding: 20px;
+            color: black;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #lock-screen {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 20;
+        }
+
+        .btn-blue {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-blue:hover {
+            background-color: darkblue;
+        }
+
+        #installation {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 30;
+        }
+
+        #bluescreen {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('badsoftブルスク.png') no-repeat center center;
+            background-size: cover;
+            z-index: 100;
+        }
+
+        #paint-canvas {
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+
+        #explorer-image {
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="installation">
+        <div id="installation-step-1">
+            ようこそ、Windows Quldra のインストールへ
+            <br><br>
+            <button class="btn-blue" onclick="nextInstallationStep(1)">次へ</button>
+        </div>
+        <div id="installation-step-2" style="display:none;">
+            Windows Quldra をインストールしています...
+            <br><br>
+            <button class="btn-blue" onclick="nextInstallationStep(2)">次へ</button>
+        </div>
+        <div id="installation-step-3" style="display:none;">
+            もうすぐ完了します...
+            <br><br>
+            <button class="btn-blue" onclick="nextInstallationStep(3)">次へ</button>
+        </div>
+        <div id="installation-step-4" style="display:none;">
+            インストール完了！
+            <br><br>
+            <button class="btn-blue" onclick="finishInstallation()">完了</button>
+        </div>
+    </div>
+    <div id="desktop">
+        <div id="taskbar">
+            <div id="start-menu-button" onclick="openStartMenu()"></div>
+            <div id="language-switch" onclick="switchLanguage()">EN</div>
+        </div>
+        <div id="start-menu">
+            <ul>
+                <li onclick="openApp('textEditor')">テキストエディタ</li>
+                <li onclick="openControlPanel()">コントロールパネル</li>
+                <li onclick="openBrowser()">ブラウザ</li>
+                <li onclick="openTimer()">タイマー</li>
+                <li onclick="openClock()">時計</li>
+                <li onclick="openPaint()">ペイント</li>
+                <li onclick="openExplorer()">エクスプローラー</li>
+                <li onclick="openMinesweeper()">マインスイーパー</li>
+                <li onclick="openAntivirus()">ウイルス対策</li>
+                <li onclick="openBadsoft()">BadSoft</li>
+                <li onclick="lockScreen()">ロック画面</li>
+                <li onclick="shutdown()">シャットダウン</li>
+            </ul>
+        </div>
+        <div id="control-panel" class="window">
+            <h2>コントロールパネル</h2>
+            <p>設定と構成</p>
+            <button class="btn-blue" onclick="closeControlPanel()">閉じる</button>
+        </div>
+        <div id="browser" class="window">
+            <h2>ブラウザ</h2>
+            <iframe src="https://www.example.com" style="width:100%;height:80%;border:none;"></iframe>
+            <button class="btn-blue" onclick="closeBrowser()">閉じる</button>
+        </div>
+        <div id="timer" class="window">
+            <h2>タイマー</h2>
+            <input type="number" id="timer-minutes" placeholder="分" style="width:80px; padding: 5px;">
+            <button class="btn-blue" onclick="startTimer()">開始</button>
+            <p id="timer-display">00:00</p>
+            <button class="btn-blue" onclick="closeTimer()">閉じる</button>
+        </div>
+        <div id="clock" class="window">
+            <h2>時計</h2>
+            <p id="clock-display">00:00:00</p>
+            <button class="btn-blue" onclick="closeClock()">閉じる</button>
+        </div>
+        <div id="paint" class="window">
+            <h2>ペイント</h2>
+            <canvas id="paint-canvas" width="300" height="200"></canvas>
+            <button class="btn-blue" onclick="clearCanvas()">クリア</button>
+            <button class="btn-blue" onclick="closePaint()">閉じる</button>
+        </div>
+        <div id="explorer" class="window">
+            <h2>エクスプローラー</h2>
+            <img id="explorer-image" src="" alt="Paint Image" style="width:100%; height:auto;">
+            <button class="btn-blue" onclick="closeExplorer()">閉じる</button>
+        </div>
+        <div id="minesweeper" class="window">
+            <h2>マインスイーパー</h2>
+            <p>ゲームがここに表示されます。</p>
+            <button class="btn-blue" onclick="closeMinesweeper()">閉じる</button>
+        </div>
+        <div id="antivirus" class="window">
+            <h2>ウイルス対策</h2>
+            <p>ウイルススキャンの結果がここに表示されます。</p>
+            <button class="btn-blue" onclick="closeAntivirus()">閉じる</button>
+        </div>
+        <div id="badsoft" class="window">
+            <h2>BadSoft</h2>
+            <img src="badsoft.png" alt="BadSoft" style="width:100%; height:auto;">
+            <button class="btn-blue" onclick="closeBadsoft()">閉じる</button>
+        </div>
+        <div id="lock-screen">
+            ロック画面
+            <br><br>
+            <button class="btn-blue" onclick="unlockScreen()">解除</button>
+        </div>
+        <div id="bluescreen"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
