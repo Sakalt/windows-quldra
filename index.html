@@ -8,14 +8,16 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #212121;
-            color: #aaaaaa; /* 文字色を追加 */
+            background-color: #212121; /* 背景色 */
+            color: #aaaaaa; /* 文字色 */
         }
         #desktop {
             position: relative;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            background: url('wallpaper.jpg') no-repeat center center; /* デスクトップ背景画像 */
+            background-size: cover;
         }
         #taskbar {
             position: absolute;
@@ -26,7 +28,7 @@
             background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 0 10px;
         }
         #start-menu-button {
@@ -35,12 +37,15 @@
             background: url('quldra.png') no-repeat center center;
             background-size: cover;
             cursor: pointer;
+            position: absolute;
+            top: 5px;
+            left: 10px;
         }
         #start-menu {
             position: absolute;
             bottom: 40px;
-            left: 0;
-            width: 200px;
+            left: 10px;
+            width: 250px;
             background: #333;
             border: 1px solid #555;
             display: none;
@@ -69,13 +74,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             display: none;
             z-index: 100;
-            color: #aaaaaa; /* 文字色を追加 */
+            color: #aaaaaa; /* 文字色 */
         }
         .window h2 {
             margin: 0;
             padding: 10px;
             background: #444;
-            color: #aaaaaa; /* 文字色を追加 */
+            color: #aaaaaa; /* 文字色 */
         }
         .btn-blue {
             background: #007bff;
@@ -91,11 +96,12 @@
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.8);
-            color: #aaaaaa; /* 文字色を追加 */
+            color: #aaaaaa; /* 文字色 */
             display: none;
             align-items: center;
             justify-content: center;
             text-align: center;
+            z-index: 100;
         }
         #bluescreen {
             position: absolute;
@@ -106,6 +112,7 @@
             background: url('badsoftブルスク.png') no-repeat center center;
             background-size: cover;
             display: none;
+            z-index: 100;
         }
         #paint-canvas {
             border: 1px solid #444;
@@ -120,7 +127,7 @@
             background: #333;
             border: 1px solid #555;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            color: #aaaaaa; /* 文字色を追加 */
+            color: #aaaaaa; /* 文字色 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -177,6 +184,11 @@
                 <li onclick="shutdown()">シャットダウン</li>
             </ul>
         </div>
+        <div id="textEditor" class="window">
+            <h2>テキストエディタ</h2>
+            <textarea style="width:100%;height:80%;border:none;background:#2e2e2e;color:#aaaaaa;"></textarea>
+            <button class="btn-blue" onclick="closeTextEditor()">閉じる</button>
+        </div>
         <div id="control-panel" class="window">
             <h2>コントロールパネル</h2>
             <p>設定と構成</p>
@@ -212,24 +224,27 @@
         </div>
         <div id="minesweeper" class="window">
             <h2>マインスイーパー</h2>
-            <p>ゲームがここに表示されます。</p>
+            <!-- マインスイーパーのコンテンツ -->
             <button class="btn-blue" onclick="closeMinesweeper()">閉じる</button>
         </div>
         <div id="antivirus" class="window">
             <h2>ウイルス対策</h2>
-            <p>ウイルススキャンの結果がここに表示されます。</p>
+            <!-- ウイルス対策のコンテンツ -->
             <button class="btn-blue" onclick="closeAntivirus()">閉じる</button>
         </div>
-        <div id="badsoft" class="window">
-            <h2>BadSoft</h2>
-            <p>悪意のあるソフトウェアがここに表示されます。</p>
-            <button class="btn-blue" onclick="closeBadsoft()">閉じる</button>
+        <div id="sidemenu" class="window">
+            <h2>サイドメニュー</h2>
+            <!-- サイドメニューのコンテンツ -->
+            <button class="btn-blue" onclick="closeSidemenu()">閉じる</button>
+        </div>
+        <div id="bluescreen">
+            <!-- BadSoftのブルースクリーン -->
         </div>
         <div id="lock-screen">
             <p>ロック画面</p>
+            <input type="password" id="password" placeholder="パスワードを入力">
             <button class="btn-blue" onclick="unlockScreen()">解除</button>
         </div>
-        <div id="bluescreen"></div>
     </div>
     <script src="app.js"></script>
 </body>
