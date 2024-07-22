@@ -5,189 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows Quldra</title>
     <style>
-        body, html {
+        body {
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #212121;
-            color: white;
+            color: #aaaaaa; /* 文字色を追加 */
         }
-
         #desktop {
             position: relative;
-            width: 100%;
-            height: 100%;
-            background: url('wallpaper.jpg') no-repeat center center fixed;
-            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
         }
-
         #taskbar {
             position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 0 10px;
         }
-
         #start-menu-button {
+            width: 50px;
+            height: 30px;
+            background: url('quldra.png') no-repeat center center;
+            background-size: cover;
             cursor: pointer;
-            background-image: url('quldra.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            width: 40px;
-            height: 40px;
         }
-
-        #language-switch {
-            cursor: pointer;
-            background-color: blue;
-            padding: 5px 10px;
-            border-radius: 3px;
-            color: white;
-        }
-
         #start-menu {
             position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ccc;
-            width: 300px;
+            bottom: 40px;
+            left: 0;
+            width: 200px;
+            background: #333;
+            border: 1px solid #555;
             display: none;
-            z-index: 10;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #start-menu ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        #start-menu ul li {
-            padding: 15px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-
-        #start-menu ul li:last-child {
-            border-bottom: none;
-        }
-
-        #start-menu ul li:hover {
-            background: #f0f0f0;
-        }
-
-        .window {
-            position: absolute;
-            width: 400px;
-            height: 300px;
-            background: white;
-            border: 1px solid #ccc;
-            z-index: 5;
-            padding: 20px;
-            color: black;
-            display: none;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #lock-screen {
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 20;
-        }
-
-        .btn-blue {
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .btn-blue:hover {
-            background-color: darkblue;
-        }
-
-        #installation {
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 30;
-        }
-
-        #bluescreen {
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('badsoftブルスク.png') no-repeat center center;
-            background-size: cover;
             z-index: 100;
         }
-
-        #paint-canvas {
-            border: 1px solid #ccc;
-            background-color: white;
+        #start-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-
-        #explorer-image {
-            border: 1px solid #ccc;
-            background-color: white;
+        #start-menu li {
+            padding: 10px;
+            cursor: pointer;
+        }
+        #start-menu li:hover {
+            background: #444;
+        }
+        .window {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 300px;
+            height: 200px;
+            background: #2e2e2e;
+            border: 1px solid #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 100;
+            color: #aaaaaa; /* 文字色を追加 */
+        }
+        .window h2 {
+            margin: 0;
+            padding: 10px;
+            background: #444;
+            color: #aaaaaa; /* 文字色を追加 */
+        }
+        .btn-blue {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #lock-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            color: #aaaaaa; /* 文字色を追加 */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        #bluescreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('badsoftブルスク.png') no-repeat center center;
+            background-size: cover;
+            display: none;
+        }
+        #paint-canvas {
+            border: 1px solid #444;
+        }
+        #installation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 150px;
+            background: #333;
+            border: 1px solid #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            color: #aaaaaa; /* 文字色を追加 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        #installation button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin: 5px;
         }
     </style>
 </head>
 <body>
     <div id="installation">
         <div id="installation-step-1">
-            ようこそ、Windows Quldra のインストールへ
-            <br><br>
-            <button class="btn-blue" onclick="nextInstallationStep(1)">次へ</button>
+            <p>インストール中: ステップ 1</p>
+            <button onclick="nextInstallationStep(1)">次へ</button>
         </div>
-        <div id="installation-step-2" style="display:none;">
-            Windows Quldra をインストールしています...
-            <br><br>
-            <button class="btn-blue" onclick="nextInstallationStep(2)">次へ</button>
+        <div id="installation-step-2" style="display: none;">
+            <p>インストール中: ステップ 2</p>
+            <button onclick="nextInstallationStep(2)">次へ</button>
         </div>
-        <div id="installation-step-3" style="display:none;">
-            もうすぐ完了します...
-            <br><br>
-            <button class="btn-blue" onclick="nextInstallationStep(3)">次へ</button>
+        <div id="installation-step-3" style="display: none;">
+            <p>インストール中: ステップ 3</p>
+            <button onclick="nextInstallationStep(3)">次へ</button>
         </div>
-        <div id="installation-step-4" style="display:none;">
-            インストール完了！
-            <br><br>
-            <button class="btn-blue" onclick="finishInstallation()">完了</button>
+        <div id="installation-step-4" style="display: none;">
+            <p>インストール完了!</p>
+            <button onclick="finishInstallation()">終了</button>
         </div>
     </div>
     <div id="desktop">
@@ -256,12 +222,11 @@
         </div>
         <div id="badsoft" class="window">
             <h2>BadSoft</h2>
-            <img src="badsoft.png" alt="BadSoft" style="width:100%; height:auto;">
+            <p>悪意のあるソフトウェアがここに表示されます。</p>
             <button class="btn-blue" onclick="closeBadsoft()">閉じる</button>
         </div>
         <div id="lock-screen">
-            ロック画面
-            <br><br>
+            <p>ロック画面</p>
             <button class="btn-blue" onclick="unlockScreen()">解除</button>
         </div>
         <div id="bluescreen"></div>
