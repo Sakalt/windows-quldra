@@ -170,20 +170,20 @@
     </div>
     <div id="desktop">
         <div id="taskbar">
-            <div id="start-menu-button"></div>
+            <div id="start-menu-button" onclick="openStartMenu()"></div>
         </div>
         <div id="start-menu">
             <ul>
                 <li onclick="openApp('textEditor')">テキストエディタ</li>
-                <li onclick="openControlPanel()">コントロールパネル</li>
-                <li onclick="openBrowser()">ブラウザ</li>
-                <li onclick="openTimer()">タイマー</li>
-                <li onclick="openClock()">時計</li>
-                <li onclick="openPaint()">ペイント</li>
-                <li onclick="openExplorer()">エクスプローラー</li>
-                <li onclick="openMinesweeper()">マインスイーパー</li>
-                <li onclick="openAntivirus()">ウイルス対策</li>
-                <li onclick="openBadsoft()">BadSoft</li>
+                <li onclick="openApp('control-panel')">コントロールパネル</li>
+                <li onclick="openApp('browser')">ブラウザ</li>
+                <li onclick="openApp('timer')">タイマー</li>
+                <li onclick="openApp('clock')">時計</li>
+                <li onclick="openApp('paint')">ペイント</li>
+                <li onclick="openApp('explorer')">エクスプローラー</li>
+                <li onclick="openApp('minesweeper')">マインスイーパー</li>
+                <li onclick="openApp('antivirus')">ウイルス対策</li>
+                <li onclick="openApp('badsoft')">BadSoft</li>
                 <li onclick="lockScreen()">ロック画面</li>
                 <li onclick="shutdown()">シャットダウン</li>
             </ul>
@@ -200,7 +200,9 @@
         </div>
         <div id="browser" class="window">
             <h2>ブラウザ</h2>
-            <iframe src="https://www.example.com" style="width:100%;height:80%;border:none;"></iframe>
+            <input type="text" id="search-bar" placeholder="検索..." style="width: 100%; padding: 5px;">
+            <button class="btn-blue" onclick="performSearch()">検索</button>
+            <iframe id="browser-frame" src="about:blank" style="width:100%;height:calc(100% - 40px);border:none;"></iframe>
             <button class="btn-blue" onclick="closeBrowser()">閉じる</button>
         </div>
         <div id="timer" class="window">
@@ -217,68 +219,92 @@
         </div>
         <div id="paint" class="window">
             <h2>ペイント</h2>
-            <div>
-                <label for="color-picker">色を選択:</label>
-                <input type="color" id="color-picker" value="#000000">
-            </div>
-            <canvas id="paint-canvas" width="300" height="200"></canvas>
-            <button class="btn-blue" onclick="clearCanvas()">クリア</button>
+            <canvas id="paint-canvas" width="100%" height="100%"></canvas>
             <button class="btn-blue" onclick="closePaint()">閉じる</button>
         </div>
         <div id="explorer" class="window">
             <h2>エクスプローラー</h2>
-            <p>ここにペイントで書いた絵が表示されます。</p>
+            <p>ファイルとフォルダーのブラウズ</p>
             <button class="btn-blue" onclick="closeExplorer()">閉じる</button>
         </div>
         <div id="minesweeper" class="window">
             <h2>マインスイーパー</h2>
-            <!-- マインスイーパーのゲームロジックを追加する -->
+            <p>ゲーム画面</p>
             <button class="btn-blue" onclick="closeMinesweeper()">閉じる</button>
         </div>
         <div id="antivirus" class="window">
             <h2>ウイルス対策</h2>
-            <!-- ウイルス対策機能を追加する -->
+            <p>システムのスキャンと保護</p>
             <button class="btn-blue" onclick="closeAntivirus()">閉じる</button>
         </div>
         <div id="badsoft" class="window">
             <h2>BadSoft</h2>
-            <div id="bluescreen"></div>
-            <button class="btn-blue" onclick="closeBadsoft()">閉じる</button>
+            <p>BadSoftに関連する情報</p>
+            <button class="btn-blue" onclick="closeBadSoft()">閉じる</button>
         </div>
         <div id="lock-screen">
             <p>ロック画面</p>
-            <button class="btn-blue" onclick="unlockScreen()">ロック解除</button>
+            <button class="btn-blue" onclick="unlockScreen()">解除</button>
         </div>
+        <div id="bluescreen"></div>
+        <div id="badsoft-screen"></div>
     </div>
 
     <script>
         function openStartMenu() {
-            const startMenu = document.getElementById('start-menu');
-            startMenu.style.display = startMenu.style.display === 'none' || startMenu.style.display === '' ? 'block' : 'none';
+            document.getElementById('start-menu').style.display = 'block';
         }
 
         function openApp(appId) {
-            closeAllWindows();
-            document.getElementById(appId).style.display = 'block';
-        }
-
-        function closeAllWindows() {
+            // Close all windows
             const windows = document.querySelectorAll('.window');
             windows.forEach(win => win.style.display = 'none');
+            
+            // Open the requested app
+            document.getElementById(appId).style.display = 'block';
+            if (appId === 'browser') {
+                document.getElementById('search-bar').focus(); // Focus on search bar when opening browser
+            }
         }
 
-        function closeTextEditor() { closeApp('textEditor'); }
-        function closeControlPanel() { closeApp('control-panel'); }
-        function closeBrowser() { closeApp('browser'); }
-        function closeTimer() { closeApp('timer'); }
-        function closeClock() { closeApp('clock'); }
-        function closePaint() { closeApp('paint'); }
-        function closeExplorer() { closeApp('explorer'); }
-        function closeMinesweeper() { closeApp('minesweeper'); }
-        function closeAntivirus() { closeApp('antivirus'); }
-        function closeBadsoft() { closeApp('badsoft'); }
-        function closeApp(appId) {
-            document.getElementById(appId).style.display = 'none';
+        function closeTextEditor() {
+            document.getElementById('textEditor').style.display = 'none';
+        }
+
+        function closeControlPanel() {
+            document.getElementById('control-panel').style.display = 'none';
+        }
+
+        function closeBrowser() {
+            document.getElementById('browser').style.display = 'none';
+        }
+
+        function closeTimer() {
+            document.getElementById('timer').style.display = 'none';
+        }
+
+        function closeClock() {
+            document.getElementById('clock').style.display = 'none';
+        }
+
+        function closePaint() {
+            document.getElementById('paint').style.display = 'none';
+        }
+
+        function closeExplorer() {
+            document.getElementById('explorer').style.display = 'none';
+        }
+
+        function closeMinesweeper() {
+            document.getElementById('minesweeper').style.display = 'none';
+        }
+
+        function closeAntivirus() {
+            document.getElementById('antivirus').style.display = 'none';
+        }
+
+        function closeBadSoft() {
+            document.getElementById('badsoft').style.display = 'none';
         }
 
         function lockScreen() {
@@ -290,47 +316,38 @@
         }
 
         function shutdown() {
-            alert('シャットダウンします');
+            alert('シャットダウンします。');
+            // 実際のシャットダウン処理は、サーバーサイドのスクリプトやバックエンドの処理に依存します。
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-bar').value;
+            const url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+            document.getElementById('browser-frame').src = url;
+        }
+
+        function startTimer() {
+            // タイマーの開始処理
         }
 
         function nextInstallationStep(step) {
-            document.getElementById('installation-step-' + step).style.display = 'none';
-            document.getElementById('installation-step-' + (step + 1)).style.display = 'block';
+            document.getElementById(`installation-step-${step}`).style.display = 'none';
+            document.getElementById(`installation-step-${step + 1}`).style.display = 'block';
         }
 
         function finishInstallation() {
             document.getElementById('installation').style.display = 'none';
         }
 
-        function startTimer() {
-            // タイマー開始ロジックを追加
-        }
-
         function updateClock() {
-            // 時計の更新ロジックを追加
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock-display').textContent = `${hours}:${minutes}:${seconds}`;
         }
 
-        document.getElementById('start-menu-button').addEventListener('click', openStartMenu);
-
-        // 各アプリケーションのボタンにイベントリスナーを追加
-        document.getElementById('textEditorBtn').addEventListener('click', () => openApp('textEditor'));
-        document.getElementById('controlPanelBtn').addEventListener('click', openControlPanel);
-        document.getElementById('browserBtn').addEventListener('click', openBrowser);
-        document.getElementById('timerBtn').addEventListener('click', openTimer);
-        document.getElementById('clockBtn').addEventListener('click', openClock);
-        document.getElementById('paintBtn').addEventListener('click', openPaint);
-        document.getElementById('explorerBtn').addEventListener('click', openExplorer);
-        document.getElementById('minesweeperBtn').addEventListener('click', openMinesweeper);
-        document.getElementById('antivirusBtn').addEventListener('click', openAntivirus);
-        document.getElementById('badsoftBtn').addEventListener('click', openBadsoft);
-        document.getElementById('lockScreenBtn').addEventListener('click', lockScreen);
-        document.getElementById('shutdownBtn').addEventListener('click', shutdown);
-
-        function clearCanvas() {
-            const canvas = document.getElementById('paint-canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        setInterval(updateClock, 1000);
     </script>
 </body>
 </html>
