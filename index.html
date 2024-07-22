@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows Quldra</title>
     <style>
-        /* 既存のスタイル */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #212121; /* 背景色 */
-            color: #aaaaaa; /* 文字色 */
+            background: url('wallpaper.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #aaaaaa;
         }
         #desktop {
             position: relative;
@@ -20,7 +20,7 @@
         }
         #taskbar {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
             height: 40px;
@@ -29,6 +29,7 @@
             align-items: center;
             justify-content: center;
             padding: 0 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         #start-menu-button {
             width: 50px;
@@ -36,19 +37,17 @@
             background: url('quldra.png') no-repeat center center;
             background-size: cover;
             cursor: pointer;
-            position: absolute;
-            top: 5px;
-            left: 10px;
         }
         #start-menu {
             position: absolute;
-            bottom: 40px;
-            left: 10px;
+            top: 40px;
+            left: calc(50% - 125px); /* メニューを中央に配置 */
             width: 250px;
             background: #333;
             border: 1px solid #555;
             display: none;
             z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         #start-menu ul {
             list-style: none;
@@ -58,6 +57,7 @@
         #start-menu li {
             padding: 10px;
             cursor: pointer;
+            color: #aaaaaa;
         }
         #start-menu li:hover {
             background: #444;
@@ -73,13 +73,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             display: none;
             z-index: 100;
-            color: #aaaaaa; /* 文字色 */
+            color: #aaaaaa;
         }
         .window h2 {
             margin: 0;
             padding: 10px;
             background: #444;
-            color: #aaaaaa; /* 文字色 */
+            color: #aaaaaa;
         }
         .btn-blue {
             background: #007bff;
@@ -95,7 +95,7 @@
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.8);
-            color: #aaaaaa; /* 文字色 */
+            color: #aaaaaa;
             display: none;
             align-items: center;
             justify-content: center;
@@ -132,7 +132,7 @@
             background: #333;
             border: 1px solid #555;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            color: #aaaaaa; /* 文字色 */
+            color: #aaaaaa;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -171,7 +171,6 @@
     <div id="desktop">
         <div id="taskbar">
             <div id="start-menu-button" onclick="openStartMenu()"></div>
-            <div id="language-switch" onclick="switchLanguage()">EN</div>
         </div>
         <div id="start-menu">
             <ul>
@@ -228,32 +227,94 @@
         </div>
         <div id="explorer" class="window">
             <h2>エクスプローラー</h2>
-            <p>ファイルエクスプローラー</p>
+            <p>ここにペイントで書いた絵が表示されます。</p>
             <button class="btn-blue" onclick="closeExplorer()">閉じる</button>
         </div>
         <div id="minesweeper" class="window">
             <h2>マインスイーパー</h2>
-            <p>マインスイーパーゲーム</p>
+            <!-- マインスイーパーのゲームロジックを追加する -->
             <button class="btn-blue" onclick="closeMinesweeper()">閉じる</button>
         </div>
         <div id="antivirus" class="window">
             <h2>ウイルス対策</h2>
-            <p>ウイルス対策スキャン</p>
+            <!-- ウイルス対策機能を追加する -->
             <button class="btn-blue" onclick="closeAntivirus()">閉じる</button>
         </div>
-        <div id="sidemenu" class="window">
-            <h2>サイドメニュー</h2>
-            <p>サイドメニュー内容</p>
-            <button class="btn-blue" onclick="closeSidemenu()">閉じる</button>
+        <div id="badsoft" class="window">
+            <h2>BadSoft</h2>
+            <div id="bluescreen"></div>
+            <button class="btn-blue" onclick="closeBadsoft()">閉じる</button>
         </div>
         <div id="lock-screen">
             <p>ロック画面</p>
-            <input type="password" placeholder="パスワードを入力" />
-            <button class="btn-blue" onclick="unlockScreen()">解除</button>
+            <button class="btn-blue" onclick="unlockScreen()">ロック解除</button>
         </div>
-        <div id="bluescreen"></div>
-        <div id="badsoft"></div>
     </div>
-    <script src="app.js"></script>
+
+    <script>
+        function openStartMenu() {
+            const startMenu = document.getElementById('start-menu');
+            startMenu.style.display = startMenu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function openApp(appId) {
+            closeAllWindows();
+            document.getElementById(appId).style.display = 'block';
+        }
+
+        function closeAllWindows() {
+            const windows = document.querySelectorAll('.window');
+            windows.forEach(win => win.style.display = 'none');
+        }
+
+        function closeTextEditor() { closeApp('textEditor'); }
+        function closeControlPanel() { closeApp('control-panel'); }
+        function closeBrowser() { closeApp('browser'); }
+        function closeTimer() { closeApp('timer'); }
+        function closeClock() { closeApp('clock'); }
+        function closePaint() { closeApp('paint'); }
+        function closeExplorer() { closeApp('explorer'); }
+        function closeMinesweeper() { closeApp('minesweeper'); }
+        function closeAntivirus() { closeApp('antivirus'); }
+        function closeBadsoft() { closeApp('badsoft'); }
+        function closeApp(appId) {
+            document.getElementById(appId).style.display = 'none';
+        }
+
+        function lockScreen() {
+            document.getElementById('lock-screen').style.display = 'flex';
+        }
+
+        function unlockScreen() {
+            document.getElementById('lock-screen').style.display = 'none';
+        }
+
+        function shutdown() {
+            alert('シャットダウンします');
+        }
+
+        function nextInstallationStep(step) {
+            document.getElementById('installation-step-' + step).style.display = 'none';
+            document.getElementById('installation-step-' + (step + 1)).style.display = 'block';
+        }
+
+        function finishInstallation() {
+            document.getElementById('installation').style.display = 'none';
+        }
+
+        function startTimer() {
+            // タイマー開始ロジックを追加
+        }
+
+        function updateClock() {
+            // 時計の更新ロジックを追加
+        }
+
+        function clearCanvas() {
+            const canvas = document.getElementById('paint-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
 </body>
 </html>
