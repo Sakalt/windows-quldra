@@ -117,4 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         explorerImage.src = imageUrl;
         openApp('explorer');
     };
+
+    function closeAllWindows() {
+        const windows = ['control-panel', 'browser', 'timer', 'clock', 'paint', 'explorer', 'minesweeper', 'antivirus', 'badsoft'];
+        windows.forEach(win => document.getElementById(win).style.display = 'none');
+    }
 });
