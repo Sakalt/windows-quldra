@@ -1,34 +1,42 @@
-let isEnglish = true;
+let currentColor = '#000000';
 
-function openStartMenu() {
-    const menu = document.getElementById('start-menu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-}
+document.getElementById('color-picker').addEventListener('input', (event) => {
+    currentColor = event.target.value;
+});
 
-function switchLanguage() {
-    isEnglish = !isEnglish;
-    document.getElementById('language-switch').innerText = isEnglish ? 'EN' : 'JA';
-    updateLanguage();
-}
+const canvas = document.getElementById('paint-canvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
 
-function updateLanguage() {
-    const startMenuItems = document.querySelectorAll('#start-menu li');
-    startMenuItems[0].textContent = isEnglish ? 'Text Editor' : 'テキストエディタ';
-    startMenuItems[1].textContent = isEnglish ? 'Control Panel' : 'コントロールパネル';
-    startMenuItems[2].textContent = isEnglish ? 'Browser' : 'ブラウザ';
-    startMenuItems[3].textContent = isEnglish ? 'Timer' : 'タイマー';
-    startMenuItems[4].textContent = isEnglish ? 'Clock' : '時計';
-    startMenuItems[5].textContent = isEnglish ? 'Paint' : 'ペイント';
-    startMenuItems[6].textContent = isEnglish ? 'Explorer' : 'エクスプローラー';
-    startMenuItems[7].textContent = isEnglish ? 'Minesweeper' : 'マインスイーパー';
-    startMenuItems[8].textContent = isEnglish ? 'Antivirus' : 'ウイルス対策';
-    startMenuItems[9].textContent = isEnglish ? 'BadSoft' : 'BadSoft';
-    startMenuItems[10].textContent = isEnglish ? 'Lock Screen' : 'ロック画面';
-    startMenuItems[11].textContent = isEnglish ? 'Shutdown' : 'シャットダウン';
+canvas.addEventListener('mousedown', (event) => {
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.moveTo(event.offsetX, event.offsetY);
+});
+
+canvas.addEventListener('mousemove', (event) => {
+    if (isDrawing) {
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 2;
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+    }
+});
+
+canvas.addEventListener('mouseup', () => {
+    isDrawing = false;
+    ctx.closePath();
+});
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function openApp(appId) {
-    document.querySelectorAll('.window').forEach(win => win.style.display = 'none');
+    const apps = ['textEditor', 'control-panel', 'browser', 'timer', 'clock', 'paint', 'explorer', 'minesweeper', 'antivirus', 'sidemenu'];
+    apps.forEach(app => {
+        document.getElementById(app).style.display = 'none';
+    });
     document.getElementById(appId).style.display = 'block';
 }
 
@@ -42,59 +50,47 @@ function closeExplorer() { document.getElementById('explorer').style.display = '
 function closeMinesweeper() { document.getElementById('minesweeper').style.display = 'none'; }
 function closeAntivirus() { document.getElementById('antivirus').style.display = 'none'; }
 function closeSidemenu() { document.getElementById('sidemenu').style.display = 'none'; }
-function openBadsoft() { document.getElementById('bluescreen').style.display = 'block'; }
 
-function lockScreen() {
-    document.getElementById('lock-screen').style.display = 'flex';
+function openControlPanel() { openApp('control-panel'); }
+function openBrowser() { openApp('browser'); }
+function openTimer() { openApp('timer'); }
+function openClock() { openApp('clock'); }
+function openPaint() { openApp('paint'); }
+function openExplorer() { openApp('explorer'); }
+function openMinesweeper() { openApp('minesweeper'); }
+function openAntivirus() { openApp('antivirus'); }
+function openSidemenu() { openApp('sidemenu'); }
+function openBadsoft() { document.getElementById('badsoft').style.display = 'block'; }
+
+function openStartMenu() {
+    const startMenu = document.getElementById('start-menu');
+    startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
 }
 
-function unlockScreen() {
-    const password = document.getElementById('password').value;
-    if (password === 'your_password') { // ここでパスワードチェックを行う
-        document.getElementById('lock-screen').style.display = 'none';
-    } else {
-        alert('Incorrect password');
-    }
+function switchLanguage() {
+    const currentLang = document.getElementById('language-switch').innerText;
+    document.getElementById('language-switch').innerText = currentLang === 'EN' ? 'JA' : 'EN';
 }
+
+function lockScreen() { document.getElementById('lock-screen').style.display = 'flex'; }
+function unlockScreen() { document.getElementById('lock-screen').style.display = 'none'; }
 
 function shutdown() {
     document.getElementById('bluescreen').style.display = 'block';
-    document.getElementById('desktop').style.display = 'none';
 }
 
-function startTimer() {
-    const minutes = document.getElementById('timer-minutes').value;
-    const display = document.getElementById('timer-display');
-    let seconds = minutes * 60;
-    setInterval(function() {
-        let min = Math.floor(seconds / 60);
-        let sec = seconds % 60;
-        display.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
-        if (seconds > 0) seconds--;
-    }, 1000);
-}
-
-function updateClock() {
-    const now = new Date();
-    document.getElementById('clock-display').textContent = now.toLocaleTimeString();
-}
-setInterval(updateClock, 1000);
-
-function clearCanvas() {
-    const canvas = document.getElementById('paint-canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function finishInstallation() {
-    document.getElementById('installation').style.display = 'none';
+function restart() {
+    document.getElementById('bluescreen').style.display = 'none';
+    document.getElementById('badsoft').style.display = 'none';
+    document.getElementById('desktop').style.display = 'block';
 }
 
 function nextInstallationStep(step) {
     document.getElementById(`installation-step-${step}`).style.display = 'none';
-    if (step < 4) {
-        document.getElementById(`installation-step-${step + 1}`).style.display = 'block';
-    } else {
-        finishInstallation();
-    }
+    document.getElementById(`installation-step-${step + 1}`).style.display = 'block';
+}
+
+function finishInstallation() {
+    document.getElementById('installation').style.display = 'none';
+    document.getElementById('desktop').style.display = 'block';
 }
