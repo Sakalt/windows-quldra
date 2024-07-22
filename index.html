@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows Quldra</title>
     <style>
+        /* 既存のスタイル */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -16,8 +17,6 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: url('wallpaper.jpg') no-repeat center center; /* デスクトップ背景画像 */
-            background-size: cover;
         }
         #taskbar {
             position: absolute;
@@ -103,16 +102,22 @@
             text-align: center;
             z-index: 100;
         }
-        #bluescreen {
+        #bluescreen, #badsoft {
             position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: url('badsoftブルスク.png') no-repeat center center;
+            background: no-repeat center center;
             background-size: cover;
             display: none;
             z-index: 100;
+        }
+        #bluescreen {
+            background: url('badsoftブルスク.png');
+        }
+        #badsoft {
+            background: url('batsoftブルスク.png');
         }
         #paint-canvas {
             border: 1px solid #444;
@@ -213,38 +218,41 @@
         </div>
         <div id="paint" class="window">
             <h2>ペイント</h2>
+            <div>
+                <label for="color-picker">色を選択:</label>
+                <input type="color" id="color-picker" value="#000000">
+            </div>
             <canvas id="paint-canvas" width="300" height="200"></canvas>
             <button class="btn-blue" onclick="clearCanvas()">クリア</button>
             <button class="btn-blue" onclick="closePaint()">閉じる</button>
         </div>
         <div id="explorer" class="window">
             <h2>エクスプローラー</h2>
-            <img id="explorer-image" src="" alt="Paint Image" style="width:100%; height:auto;">
+            <p>ファイルエクスプローラー</p>
             <button class="btn-blue" onclick="closeExplorer()">閉じる</button>
         </div>
         <div id="minesweeper" class="window">
             <h2>マインスイーパー</h2>
-            <!-- マインスイーパーのコンテンツ -->
+            <p>マインスイーパーゲーム</p>
             <button class="btn-blue" onclick="closeMinesweeper()">閉じる</button>
         </div>
         <div id="antivirus" class="window">
             <h2>ウイルス対策</h2>
-            <!-- ウイルス対策のコンテンツ -->
+            <p>ウイルス対策スキャン</p>
             <button class="btn-blue" onclick="closeAntivirus()">閉じる</button>
         </div>
         <div id="sidemenu" class="window">
             <h2>サイドメニュー</h2>
-            <!-- サイドメニューのコンテンツ -->
+            <p>サイドメニュー内容</p>
             <button class="btn-blue" onclick="closeSidemenu()">閉じる</button>
-        </div>
-        <div id="bluescreen">
-            <!-- BadSoftのブルースクリーン -->
         </div>
         <div id="lock-screen">
             <p>ロック画面</p>
-            <input type="password" id="password" placeholder="パスワードを入力">
+            <input type="password" placeholder="パスワードを入力" />
             <button class="btn-blue" onclick="unlockScreen()">解除</button>
         </div>
+        <div id="bluescreen"></div>
+        <div id="badsoft"></div>
     </div>
     <script src="app.js"></script>
 </body>
